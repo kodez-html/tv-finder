@@ -11,6 +11,53 @@ const requestOptions = {
   }
 };
 
+function displayDetails(show) {
+  showDetails.innerHTML = "";
+
+  // Show title
+  const title = document.createElement("h2");
+  title.textContent = show.name;
+  showDetails.appendChild(title);
+
+  // Show poster
+  if (show.poster_path) {
+    const poster = document.createElement("img");
+    poster.src = `https://image.tmdb.org/t/p/w500${show.poster_path}`;
+    poster.alt = `${show.name} poster`;
+    showDetails.appendChild(poster);
+  } else {
+    const noPoster = document.createElement("p");
+    noPoster.textContent = "No poster available";
+    showDetails.appendChild(noPoster);
+  }
+
+  // Show overview
+  const overview = document.createElement("p");
+  overview.textContent = show.overview;
+  showDetails.appendChild(overview);
+
+  // Show genres
+  const genres = document.createElement("p");
+  genres.textContent = "Genres: " + show.genres.map(genre => genre.name).join(", ");
+  showDetails.appendChild(genres);
+
+  // Number of seasons
+  const seasons = document.createElement("p");
+  seasons.textContent = "Seasons: " + show.number_of_seasons;
+  showDetails.appendChild(seasons);
+
+  // Number of episodes
+  const episodes = document.createElement("p");
+  episodes.textContent = "Episodes: " + show.number_of_episodes;
+  showDetails.appendChild(episodes);
+
+  // Show status
+  const status = document.createElement("p");
+  status.textContent = "Status: " + show.status;
+  showDetails.appendChild(status);
+}
+
+
 // Step 5: Fill the dropdown
 function fillDropdown(shows) {
   showSelect.innerHTML = "";
@@ -60,7 +107,7 @@ async function loadShowDetails(id) {
     }
 
     const show = await res.json();
-    console.log(show);
+    displayDetails(show);
 
   } catch (error) {
     console.error(error);
