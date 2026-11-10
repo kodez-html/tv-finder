@@ -1,4 +1,25 @@
+
 const showSelect = document.getElementById("show-select");
+
+// Step 5: Fill the dropdown with popular shows
+function fillDropdown(shows) {
+  // Clear the dropdown
+  showSelect.innerHTML = "";
+
+  // Create the first placeholder option
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select a show";
+  showSelect.appendChild(placeholder);
+
+  // Add each show to the dropdown
+  shows.forEach(show => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.textContent = show.name;
+    showSelect.appendChild(option);
+  });
+}
 
 async function loadPopularShows() {
   const url = "https://api.themoviedb.org/3/tv/popular";
@@ -19,7 +40,10 @@ async function loadPopularShows() {
     }
 
     const data = await res.json();
-    console.log(data);
+
+    // Fill the dropdown with the results
+    fillDropdown(data.results);
+
   } catch (error) {
     console.error(error);
   }
