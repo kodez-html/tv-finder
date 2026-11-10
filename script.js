@@ -3,8 +3,17 @@ const showSelect = document.getElementById("show-select");
 const showDetails = document.getElementById("show-details");
 const message = document.getElementById("message");
 
+// Updated showMessage if it fails, it gave only text before.
 function showMessage(text) {
   message.textContent = text;
+
+  if (text.startsWith("Loading")) {
+    message.className = "loading";
+  } else if (text !== "") {
+    message.className = "error";
+  } else {
+    message.className = "";
+  }
 }
 
 // Request options shared by both API requests
