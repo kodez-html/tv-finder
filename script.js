@@ -1,6 +1,11 @@
 
 const showSelect = document.getElementById("show-select");
 const showDetails = document.getElementById("show-details");
+const message = document.getElementById("message");
+
+function showMessage(text) {
+  message.textContent = text;
+}
 
 // Request options shared by both API requests
 const requestOptions = {
@@ -76,43 +81,62 @@ function fillDropdown(shows) {
 }
 
 // Load popular TV shows
+
 async function loadPopularShows() {
   const url = "https://api.themoviedb.org/3/tv/popular";
+
+  showMessage("Loading popular shows...");
 
   try {
     const res = await fetch(url, requestOptions);
 
     if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error("Your TMDB token was rejected. Check your token.");
+      }
       throw new Error(`Request failed with status ${res.status}`);
     }
 
     const data = await res.json();
 
     fillDropdown(data.results);
+    showMessage("");
 
   } catch (error) {
+    showMessage(error.message);
     console.error(error);
   }
 }
 
-// Step 6: Load details for the selected show
+
+// Load details for the selected show
+
 async function loadShowDetails(id) {
   const url = `https://api.themoviedb.org/3/tv/${id}`;
+
+  showMessage("Loading show details...");
 
   try {
     const res = await fetch(url, requestOptions);
 
     if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error("Your TMDB token was rejected. Check your token.");
+      }
       throw new Error(`Request failed with status ${res.status}`);
     }
 
     const show = await res.json();
+
     displayDetails(show);
+    showMessage("");
 
   } catch (error) {
+    showMessage(error.message);
     console.error(error);
   }
 }
+
 
 // Listen for dropdown changes
 showSelect.addEventListener("change", function () {
